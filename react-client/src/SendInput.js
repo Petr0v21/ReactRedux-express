@@ -2,15 +2,14 @@ import React, { useState } from "react";
 
 const SendInput = () => {
   const [inputValue, setInputValue] = useState("");
-  
+
   const inputHandler = (e) => {
     setInputValue(e.target.value);
-
   };
-  
-  const sendMessage = () => {
-    console.log(inputValue)
-    fetch("http://localhost:4000/db", {
+
+  const sendMessage = async () => {
+    console.log(inputValue);
+    const data = await fetch("http://localhost:4000/db", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -18,20 +17,20 @@ const SendInput = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ message: inputValue }),
-    });
-    setInputValue("")
+    }).then(() => setInputValue(""));
+    console.log(data);
   };
 
   return (
     <div>
       <input
-          type="text"
-          value={inputValue}
-          onChange={(e) => inputHandler(e)}
-        ></input>
-        <button onClick={() => sendMessage()}>add</button>
+        type="text"
+        value={inputValue}
+        onChange={(e) => inputHandler(e)}
+      ></input>
+      <button onClick={() => sendMessage()}>add</button>
     </div>
-  )
+  );
 };
 
 export default SendInput;
